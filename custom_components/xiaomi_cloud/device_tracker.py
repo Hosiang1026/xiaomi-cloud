@@ -78,12 +78,22 @@ class XiaomiDeviceEntity(TrackerEntity, RestoreEntity, Entity):
     @property
     def latitude(self):
         """Return latitude value of the device."""
-        return self.coordinator.data[self._vin]["device_lat"]
+#        return self.coordinator.data[self._vin]["device_lat"]
+        device_data = self.coordinator.data[self._vin]
+        if "device_lat" in device_data:
+            return device_data["device_lat"]
+        else:
+            return 0.0
 
     @property
     def longitude(self):
         """Return longitude value of the device."""
-        return self.coordinator.data[self._vin]["device_lon"]
+#        return self.coordinator.data[self._vin]["device_lon"]
+        device_data= self.coordinator.data[self._vin]
+        if "device_lon" in device_data:
+            return device_data["device_lon"]
+        else:
+            return 0.0
 
     @property
     def location_accuracy(self):

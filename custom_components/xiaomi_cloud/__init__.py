@@ -59,9 +59,15 @@ async def async_setup_entry(hass, config_entry) -> bool:
         COORDINATOR: coordinator,
         UNDO_UPDATE_LISTENER: undo_listener,
     }
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(config_entry, DEVICE_TRACKER)
-    )
+
+#    hass.async_create_task(
+#        hass.config_entries.async_forward_entry_setup(config_entry, DEVICE_TRACKER)
+#    )
+    
+    # 修复点1：正确等待平台设置完成
+    await hass.config_entries.async_forward_entry_setup(config_entry, DEVICE_TRACKER)
+    # 修复点2：启动初始刷新（作为后台任务）
+    hass.async_create_task(coordinator.async_refresh())
 
     async def services(call):
         """Handle the service call."""
